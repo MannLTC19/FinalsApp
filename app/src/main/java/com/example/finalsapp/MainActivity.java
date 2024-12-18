@@ -21,7 +21,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     ListView lvSubjects;
-    Button btnShowSummary;
+    Button btnShowSummary, btnDropAll;
 
     String[] subjects = {
             "Probability and Statistics - 3 Credits",
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         lvSubjects = findViewById(R.id.lvSubjects);
         btnShowSummary = findViewById(R.id.btnShowSummary);
+        btnDropAll = findViewById(R.id.btnDropAll);
 
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
@@ -97,7 +98,34 @@ public class MainActivity extends AppCompatActivity {
                 saveDataToFirestore();
             }
         });
+        btnDropAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dropAllSelections();
+            }
+        });
     }
+
+    private void dropAllSelections() {
+        for (int i = 0; i < lvSubjects.getCount(); i++) {
+            lvSubjects.setItemChecked(i, false);
+        }
+
+        totalCredits = 0;
+        selectedSubjects.clear();
+
+        db.collection("enrollments")
+                .document("student_enrollment")
+                .delete()
+                .addOnSuccessListener(aVoid ->
+                        Toast.makeText(MainActivity.this, "All selections dropped successfully!", Toast.LENGTH_SHORT).show()
+                )
+                .addOnFailureListener(e ->
+                        Toast.makeText(MainActivity.this, "Error dropping selections!", Toast.LENGTH_SHORT).show()
+                );
+    }
+
+
 
     private void saveDataToFirestore() {
         selectedSubjects.clear();

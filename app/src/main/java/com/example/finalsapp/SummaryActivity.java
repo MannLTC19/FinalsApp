@@ -16,32 +16,28 @@ import java.util.List;
 public class SummaryActivity extends AppCompatActivity {
 
     TextView tvEnrollmentSummary;
-    Button btnBack;
+    Button btnBack, btnDropAll;
     FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_summary); // Use your XML file here
+        setContentView(R.layout.activity_summary);
 
-        // Initialize UI components
         tvEnrollmentSummary = findViewById(R.id.tvEnrollmentSummary);
         btnBack = findViewById(R.id.btnBack);
+        btnDropAll = findViewById(R.id.btnDropAll);
 
-        // Initialize Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Fetch data from Firestore and display it in the TextView
         db.collection("enrollments")
                 .document("student_enrollment")
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        // Get selected subjects and total credits
                         List<String> selectedSubjects = (List<String>) documentSnapshot.get("selectedSubjects");
                         int totalCredits = documentSnapshot.getLong("totalCredits").intValue();
 
-                        // Create a formatted summary
                         StringBuilder summary = new StringBuilder();
                         summary.append("Selected Subjects:\n");
                         for (String subject : selectedSubjects) {
@@ -49,7 +45,6 @@ public class SummaryActivity extends AppCompatActivity {
                         }
                         summary.append("\nTotal Credits: ").append(totalCredits);
 
-                        // Display the summary
                         tvEnrollmentSummary.setText(summary.toString());
                     } else {
                         tvEnrollmentSummary.setText("No enrollment data found.");
@@ -59,16 +54,37 @@ public class SummaryActivity extends AppCompatActivity {
                     Toast.makeText(SummaryActivity.this, "Error loading data.", Toast.LENGTH_SHORT).show();
                 });
 
-        // Handle the Back button click
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate back to MenuActivity
                 Intent intent = new Intent(SummaryActivity.this, MenuActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
+        btnDropAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dropAllSelections();
+            }
+        });
+    }
+    private void dropAllSelections() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("enrollments")
+                .document("student_enrollment")
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(SummaryActivity.this, "All selections dropped successfully!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SummaryActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(SummaryActivity.this, "Error dropping selections!", Toast.LENGTH_SHORT).show()
+                );
     }
 }
 

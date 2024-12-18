@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F4F4F4"
+        android:background="#D8C4B6"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#FFFFFF"
+            android:background="#F5EFE7"
             android:dividerHeight="1dp"
             android:padding="8dp" />
 
@@ -52,6 +52,15 @@
             android:text="Submit Enrollment"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnDropAll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Drop All"
+            android:backgroundTint="#D32F2F"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="12dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
