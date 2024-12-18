@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "314985226483",
+    "project_id": "finalexamdb-baa84",
+    "storage_bucket": "finalexamdb-baa84.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314985226483:android:bda37b7a720c83aeb05786",
+        "android_client_info": {
+          "package_name": "com.example.finalsapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3f1PbzF20CTh5mK307fkUSnai5TQEMnM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
